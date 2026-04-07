@@ -1,0 +1,48 @@
+.client-current-materials {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.client-current-materials-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.client-current-materials-empty {
+  margin: 0;
+  color: #6b7280;
+}
+
+.client-current-materials-card {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.client-current-materials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.client-current-materials-item {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.client-current-materials-code {
+  font-weight: 700;
+  color: #111827;
+}
+
+.client-current-materials-separator {
+  color: #6b7280;
+}
+
+.client-current-materials-name {
+  color: #374151;
+}

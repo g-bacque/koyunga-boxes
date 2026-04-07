@@ -1,0 +1,69 @@
+.return-materials-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.return-materials-form-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.return-materials-form-empty {
+  margin: 0;
+  color: #6b7280;
+}
+
+.return-materials-form-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.return-materials-form-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.return-materials-form-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.return-materials-form-item-code {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.return-materials-form-item-name {
+  font-size: 14px;
+  color: #111827;
+}
+
+.return-materials-form-button {
+  align-self: flex-start;
+  border: none;
+  background-color: #111827;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.return-materials-form-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,64 @@
+.client-history {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.client-history-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.client-history-empty {
+  margin: 0;
+  color: #6b7280;
+}
+
+.client-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.client-history-group {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.client-history-date {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.client-history-materials {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.client-history-material-item {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.client-history-material-code {
+  font-weight: 700;
+  color: #111827;
+}
+
+.client-history-material-separator {
+  color: #6b7280;
+}
+
+.client-history-material-name {
+  color: #374151;
+}

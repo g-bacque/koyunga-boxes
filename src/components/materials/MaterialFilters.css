@@ -1,0 +1,29 @@
+.material-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.material-filters-search {
+  flex: 1;
+  min-width: 260px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.material-filters-search:focus {
+  outline: none;
+  border-color: #9ca3af;
+}
+
+.material-filters-select {
+  min-width: 180px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background-color: white;
+}

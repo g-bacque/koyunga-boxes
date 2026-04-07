@@ -1,0 +1,17 @@
+.material-status-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.material-status-badge--available {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.material-status-badge--assigned {
+  background-color: #fee2e2;
+  color: #991b1b;
+}

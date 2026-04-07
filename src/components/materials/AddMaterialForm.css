@@ -1,0 +1,73 @@
+.add-material-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.add-material-form-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.add-material-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.add-material-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-material-form-field--full {
+  grid-column: 1 / -1;
+}
+
+.add-material-form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.add-material-form-input,
+.add-material-form-textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.add-material-form-input:focus,
+.add-material-form-textarea:focus {
+  outline: none;
+  border-color: #9ca3af;
+}
+
+.add-material-form-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.add-material-form-button {
+  align-self: flex-start;
+  border: none;
+  background-color: #111827;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-material-form-button:hover {
+  background-color: #1f2937;
+}
