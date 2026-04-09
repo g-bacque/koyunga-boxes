@@ -13,7 +13,7 @@ export default function ClientDetailPage({
   assignments,
   setAssignments,
 }) {
-  const [activeAction, setActiveAction] = useState(null); // "assign" | "return" | null
+  const [activeAction, setActiveAction] = useState(null);
 
   if (!client) return null;
 
@@ -24,65 +24,122 @@ export default function ClientDetailPage({
   return (
     <div className="client-detail-page">
       <button className="client-detail-back-button" onClick={onBack}>
-        ← Volver
+        ← Volver a clientes
       </button>
 
-      <h1 className="client-detail-page-title">
-        {client.name} {client.lastName}
-      </h1>
-
-      <div className="client-detail-card">
-        <p><strong>ID:</strong> {client.id}</p>
-        <p><strong>Familia:</strong> {client.familyName || "-"}</p>
-        <p><strong>Teléfono:</strong> {client.phone || "-"}</p>
-        <p><strong>Email:</strong> {client.email || "-"}</p>
-        <p><strong>Notas:</strong> {client.notes || "-"}</p>
+      <div className="client-detail-header">
+        <div>
+          <h1 className="client-detail-page-title">
+            {client.name} {client.lastName}
+          </h1>
+          <p className="client-detail-page-subtitle">
+            Consulta materiales actuales e historial del cliente
+          </p>
+        </div>
       </div>
 
-      <ClientCurrentMaterials clientId={client.id} materials={materials} />
+      <section className="client-detail-section card">
+        <h2 className="client-detail-section-title">Datos del cliente</h2>
 
-      {/* Acciones */}
-      <div className="client-actions">
-        <button
-          className="client-action-button"
-          onClick={() => toggleAction("assign")}
-        >
-          Asignar materiales
-        </button>
+        <div className="client-detail-info-grid">
+          <div className="client-detail-info-item">
+            <span className="client-detail-info-label">ID</span>
+            <span className="client-detail-info-value">{client.id}</span>
+          </div>
 
-        <button
-          className="client-action-button"
-          onClick={() => toggleAction("return")}
-        >
-          Devolver materiales
-        </button>
-      </div>
+          <div className="client-detail-info-item">
+            <span className="client-detail-info-label">Familia</span>
+            <span className="client-detail-info-value">
+              {client.familyName || "—"}
+            </span>
+          </div>
 
-      {/* Formularios condicionales */}
-      {activeAction === "assign" && (
-        <AssignMaterialsForm
+          <div className="client-detail-info-item">
+            <span className="client-detail-info-label">Teléfono</span>
+            <span className="client-detail-info-value">
+              {client.phone || "—"}
+            </span>
+          </div>
+
+          <div className="client-detail-info-item">
+            <span className="client-detail-info-label">Email</span>
+            <span className="client-detail-info-value">
+              {client.email || "—"}
+            </span>
+          </div>
+
+          <div className="client-detail-info-item client-detail-info-item--full">
+            <span className="client-detail-info-label">Notas</span>
+            <span className="client-detail-info-value">
+              {client.notes || "—"}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section className="client-detail-section">
+        <ClientCurrentMaterials clientId={client.id} materials={materials} />
+      </section>
+
+      <section className="client-detail-section card">
+        <div className="client-detail-actions-header">
+          <h2 className="client-detail-section-title">Acciones</h2>
+          <p className="client-detail-actions-text">
+            Asigna nuevos materiales o registra una devolución
+          </p>
+        </div>
+
+        <div className="client-actions">
+          <button
+            className={`client-action-button ${
+              activeAction === "assign" ? "client-action-button--active" : ""
+            }`}
+            onClick={() => toggleAction("assign")}
+          >
+            Asignar materiales
+          </button>
+
+          <button
+            className={`client-action-button ${
+              activeAction === "return" ? "client-action-button--active" : ""
+            }`}
+            onClick={() => toggleAction("return")}
+          >
+            Devolver materiales
+          </button>
+        </div>
+
+        {activeAction === "assign" && (
+          <div className="client-detail-form-wrapper">
+            <AssignMaterialsForm
+              clientId={client.id}
+              materials={materials}
+              setMaterials={setMaterials}
+              setAssignments={setAssignments}
+            />
+          </div>
+        )}
+
+        {activeAction === "return" && (
+          <div className="client-detail-form-wrapper">
+            <ReturnMaterialsForm
+              clientId={client.id}
+              materials={materials}
+              setMaterials={setMaterials}
+              assignments={assignments}
+              setAssignments={setAssignments}
+            />
+          </div>
+        )}
+      </section>
+
+      <section className="client-detail-section">
+        <ClientHistory
           clientId={client.id}
-          materials={materials}
-          setMaterials={setMaterials}
-          setAssignments={setAssignments}
-        />
-      )}
-
-      {activeAction === "return" && (
-        <ReturnMaterialsForm
-          clientId={client.id}
-          materials={materials}
-          setMaterials={setMaterials}
           assignments={assignments}
-          setAssignments={setAssignments}
+          materials={materials}
         />
-      )}
-
-      <ClientHistory
-        clientId={client.id}
-        assignments={assignments}
-        materials={materials}
-      />
+      </section>
     </div>
   );
 }

@@ -1,30 +1,43 @@
-export default function Sidebar({ setPage }) {
-  return (
-    <div className="w-64 bg-gray-900 text-white p-4">
-      <h1 className="text-xl font-bold mb-6">Koyunga</h1>
+import logo from "../../assets/koyunga-boxes-logo.png";
+import "./Sidebar.css";
 
-      <nav className="space-y-3">
+export default function Sidebar({ page, setPage }) {
+  return (
+    <header className="topbar">
+      <div className="topbar-logo-container">
+        <img src={logo} alt="Koyunga Boxes" className="topbar-logo" />
+      </div>
+
+      <nav className="topbar-menu">
         <button
+          className={`topbar-link ${
+            page === "dashboard" ? "topbar-link--active" : ""
+          }`}
           onClick={() => setPage("dashboard")}
-          className="block w-full text-left hover:text-gray-300"
         >
           Dashboard
         </button>
 
         <button
+          className={`topbar-link ${
+            page === "inventory" ? "topbar-link--active" : ""
+          }`}
           onClick={() => setPage("inventory")}
-          className="block w-full text-left hover:text-gray-300"
         >
           Inventario
         </button>
 
         <button
+          className={`topbar-link ${
+            page === "clients" || page === "client-detail"
+              ? "topbar-link--active"
+              : ""
+          }`}
           onClick={() => setPage("clients")}
-          className="block w-full text-left hover:text-gray-300"
         >
           Clientes
         </button>
       </nav>
-    </div>
+    </header>
   );
 }

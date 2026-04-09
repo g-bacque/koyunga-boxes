@@ -22,13 +22,6 @@ export default function ClientsPage({
   return (
     <div className="clients-page">
       <div className="clients-page-header">
-        <div>
-          <h1 className="clients-page-title">Clientes</h1>
-          <p className="clients-page-description">
-            Listado de clientes del centro.
-          </p>
-        </div>
-
         <button
           className="clients-page-action-button"
           onClick={handleToggleAddClientForm}

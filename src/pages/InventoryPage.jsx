@@ -55,13 +55,6 @@ export default function InventoryPage({
   return (
     <div className="inventory-page">
       <div className="inventory-page-header">
-        <div>
-          <h1 className="inventory-page-title">Inventario</h1>
-          <p className="inventory-page-description">
-            Listado de materiales del centro.
-          </p>
-        </div>
-
         <button
           className="inventory-page-action-button"
           onClick={handleToggleAddMaterialForm}

@@ -1,0 +1,49 @@
+.topbar {
+  width: 100%;
+  background-color: white;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0 12px 0;
+  gap: 10px;
+}
+
+.topbar-logo-container {
+  display: flex;
+  justify-content: center;
+}
+
+.topbar-logo {
+  width: 140px;
+}
+
+.topbar-menu {
+  display: flex;
+  gap: 16px;
+}
+
+.topbar-link {
+  background: none;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.topbar-link:hover {
+  background-color: #f3f4f6;
+}
+
+.topbar-link--active {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.topbar-link--active:hover {
+  background-color: var(--color-primary);
+}

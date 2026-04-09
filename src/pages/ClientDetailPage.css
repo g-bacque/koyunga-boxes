@@ -1,18 +1,135 @@
-.client-actions {
+.client-detail-page {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.client-detail-back-button {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.client-detail-back-button:hover {
+  text-decoration: underline;
+}
+
+.client-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.client-detail-page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.client-detail-page-subtitle {
+  font-size: 14px;
+  color: var(--color-text-light);
+  margin: 6px 0 0 0;
+}
+
+.client-detail-section {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
+.client-detail-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.client-detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.client-detail-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.client-detail-info-item--full {
+  grid-column: 1 / -1;
+}
+
+.client-detail-info-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.client-detail-info-value {
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.client-detail-actions-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.client-detail-actions-text {
+  font-size: 14px;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.client-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .client-action-button {
-  border: none;
-  background-color: #111827;
-  color: white;
+  border: 1px solid var(--color-border);
+  background-color: white;
+  color: var(--color-text);
   padding: 10px 14px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .client-action-button:hover {
-  background-color: #1f2937;
+  background-color: #f8fafc;
+}
+
+.client-action-button--active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.client-action-button--active:hover {
+  background-color: var(--color-primary);
+}
+
+.client-detail-form-wrapper {
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .client-detail-info-grid {
+    grid-template-columns: 1fr;
+  }
 }

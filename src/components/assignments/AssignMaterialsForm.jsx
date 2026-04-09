@@ -73,71 +73,72 @@ export default function AssignMaterialsForm({
   };
 
   return (
-    <form className="assign-materials-form" onSubmit={handleSubmit}>
-      <h2 className="assign-materials-form-title">Asignar materiales</h2>
+    <form className="form-card" onSubmit={handleSubmit}>
+      <h2 className="form-title">Asignar materiales</h2>
 
-      <div className="assign-materials-form-field">
-        <label
-          className="assign-materials-form-label"
-          htmlFor="assigned-date"
-        >
+      <div className="form-field">
+        <label className="form-label" htmlFor="assigned-date">
           Fecha de asignación
         </label>
         <input
           id="assigned-date"
           type="date"
-          className="assign-materials-form-date"
+          className="form-input assign-materials-form-date"
           value={assignedDate}
           onChange={(event) => setAssignedDate(event.target.value)}
         />
       </div>
 
-      <input
-        type="text"
-        className="assign-materials-form-search"
-        placeholder="Buscar por código o nombre"
-        value={searchTerm}
-        onChange={(event) => setSearchTerm(event.target.value)}
-      />
+      <div className="form-field">
+        <label className="form-label" htmlFor="assign-search">
+          Buscar material
+        </label>
+        <input
+          id="assign-search"
+          type="text"
+          className="form-input"
+          placeholder="Buscar por código o nombre"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+        />
+      </div>
 
       {availableMaterials.length === 0 ? (
-        <p className="assign-materials-form-empty">
+        <p className="form-empty">
           No hay materiales disponibles ahora mismo.
         </p>
       ) : filteredMaterials.length === 0 ? (
-        <p className="assign-materials-form-empty">
+        <p className="form-empty">
           No se encontraron materiales con esa búsqueda.
         </p>
       ) : (
-        <div className="assign-materials-form-list">
+        <div className="form-list assign-materials-form-list">
           {filteredMaterials.map((material) => (
-            <label key={material.id} className="assign-materials-form-item">
+            <label key={material.id} className="form-check-item">
               <input
                 type="checkbox"
                 checked={selectedMaterials.includes(material.id)}
                 onChange={() => handleToggleMaterial(material.id)}
               />
 
-              <div className="assign-materials-form-item-content">
-                <span className="assign-materials-form-item-code">
-                  {material.id}
-                </span>
-                <span className="assign-materials-form-item-name">
-                  {material.name}
-                </span>
+              <div className="form-check-item-content">
+                <span className="form-check-item-code">{material.id}</span>
+                <span className="form-check-item-name">{material.name}</span>
               </div>
             </label>
           ))}
         </div>
       )}
 
-      <button
-        type="submit"
-        className="assign-materials-form-button"
-        disabled={selectedMaterials.length === 0}
-      >
-        Guardar asignación
-      </button>
+      <div className="form-actions">
+        <button
+          type="submit"
+          className="form-button-primary"
+          disabled={selectedMaterials.length === 0}
+        >
+          Guardar asignación
+        </button>
+      </div>
     </form>
   );
 }

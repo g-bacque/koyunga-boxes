@@ -1,7 +1,35 @@
-export default function Header() {
+import "./Header.css";
+
+const pageTitles = {
+  dashboard: {
+    title: "Dashboard",
+    subtitle: "Resumen general de Koyunga Boxes",
+  },
+  inventory: {
+    title: "Inventario",
+    subtitle: "Consulta y gestiona los materiales disponibles",
+  },
+  clients: {
+    title: "Clientes",
+    subtitle: "Consulta y gestiona los clientes del centro",
+  },
+  "client-detail": {
+    title: "Ficha del cliente",
+    subtitle: "Consulta materiales actuales e historial",
+  },
+};
+
+export default function Header({ page }) {
+  const currentPage = pageTitles[page] || pageTitles.dashboard;
+
   return (
-    <div className="h-16 border-b flex items-center px-6 bg-white">
-      <h2 className="text-lg font-semibold">Koyunga Boxes</h2>
-    </div>
+    <header className="header">
+      <div className="header-content">
+        <div>
+          <h1 className="header-title">{currentPage.title}</h1>
+          <p className="header-subtitle">{currentPage.subtitle}</p>
+        </div>
+      </div>
+    </header>
   );
 }

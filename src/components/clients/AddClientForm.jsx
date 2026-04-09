@@ -39,91 +39,93 @@ export default function AddClientForm({ setClients, onClientAdded }) {
   };
 
   return (
-    <form className="add-client-form" onSubmit={handleSubmit}>
-      <h2 className="add-client-form-title">Añadir cliente</h2>
+    <form className="form-card" onSubmit={handleSubmit}>
+      <h2 className="form-title">Añadir cliente</h2>
 
-      <div className="add-client-form-grid">
-        <div className="add-client-form-field">
-          <label className="add-client-form-label" htmlFor="client-name">
+      <div className="form-grid">
+        <div className="form-field">
+          <label className="form-label" htmlFor="client-name">
             Nombre
           </label>
           <input
             id="client-name"
             type="text"
-            className="add-client-form-input"
+            className="form-input"
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
         </div>
 
-        <div className="add-client-form-field">
-          <label className="add-client-form-label" htmlFor="client-last-name">
+        <div className="form-field">
+          <label className="form-label" htmlFor="client-last-name">
             Apellido
           </label>
           <input
             id="client-last-name"
             type="text"
-            className="add-client-form-input"
+            className="form-input"
             value={lastName}
             onChange={(event) => setLastName(event.target.value)}
           />
         </div>
 
-        <div className="add-client-form-field">
-          <label className="add-client-form-label" htmlFor="client-family-name">
+        <div className="form-field">
+          <label className="form-label" htmlFor="client-family-name">
             Familia
           </label>
           <input
             id="client-family-name"
             type="text"
-            className="add-client-form-input"
+            className="form-input"
             value={familyName}
             onChange={(event) => setFamilyName(event.target.value)}
           />
         </div>
 
-        <div className="add-client-form-field">
-          <label className="add-client-form-label" htmlFor="client-phone">
+        <div className="form-field">
+          <label className="form-label" htmlFor="client-phone">
             Teléfono
           </label>
           <input
             id="client-phone"
             type="text"
-            className="add-client-form-input"
+            className="form-input"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
           />
         </div>
 
-        <div className="add-client-form-field">
-          <label className="add-client-form-label" htmlFor="client-email">
+        <div className="form-field">
+          <label className="form-label" htmlFor="client-email">
             Email
           </label>
           <input
             id="client-email"
             type="email"
-            className="add-client-form-input"
+            className="form-input"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
 
-        <div className="add-client-form-field add-client-form-field--full">
-          <label className="add-client-form-label" htmlFor="client-notes">
+        <div className="form-field form-field--full">
+          <label className="form-label" htmlFor="client-notes">
             Notas
           </label>
           <textarea
             id="client-notes"
-            className="add-client-form-textarea"
+            className="form-textarea"
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
           />
         </div>
       </div>
 
-      <button type="submit" className="add-client-form-button">
-        Guardar cliente
-      </button>
+      <div className="form-actions">
+        <button type="submit" className="form-button-primary">
+          Guardar cliente
+        </button>
+      </div>
     </form>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 import DashboardPage from "../pages/DashboardPage";
@@ -8,14 +8,39 @@ import ClientDetailPage from "../pages/ClientDetailPage";
 import initialMaterials from "../data/materials";
 import initialAssignments from "../data/assignments";
 import initialClients from "../data/clients";
+import {
+  STORAGE_KEYS,
+  getStoredData,
+  setStoredData,
+} from "../services/storage";
 
 export default function App() {
   const [page, setPage] = useState("dashboard");
   const [selectedClient, setSelectedClient] = useState(null);
 
-  const [materials, setMaterials] = useState(initialMaterials);
-  const [assignments, setAssignments] = useState(initialAssignments);
-  const [clients, setClients] = useState(initialClients);
+  const [materials, setMaterials] = useState(() =>
+    getStoredData(STORAGE_KEYS.materials, initialMaterials)
+  );
+
+  const [assignments, setAssignments] = useState(() =>
+    getStoredData(STORAGE_KEYS.assignments, initialAssignments)
+  );
+
+  const [clients, setClients] = useState(() =>
+    getStoredData(STORAGE_KEYS.clients, initialClients)
+  );
+
+  useEffect(() => {
+    setStoredData(STORAGE_KEYS.materials, materials);
+  }, [materials]);
+
+  useEffect(() => {
+    setStoredData(STORAGE_KEYS.assignments, assignments);
+  }, [assignments]);
+
+  useEffect(() => {
+    setStoredData(STORAGE_KEYS.clients, clients);
+  }, [clients]);
 
   const handleSelectClient = (client) => {
     setSelectedClient(client);
@@ -58,6 +83,10 @@ export default function App() {
       prevClients.filter((client) => client.id !== clientId)
     );
 
+    setAssignments((prevAssignments) =>
+      prevAssignments.filter((assignment) => assignment.clientId !== clientId)
+    );
+
     if (selectedClient?.id === clientId) {
       setSelectedClient(null);
       setPage("clients");
@@ -89,6 +118,13 @@ export default function App() {
 
     setMaterials((prevMaterials) =>
       prevMaterials.filter((material) => material.id !== materialId)
+    );
+
+    setAssignments((prevAssignments) =>
+      prevAssignments.map((assignment) => ({
+        ...assignment,
+        materialIds: assignment.materialIds.filter((id) => id !== materialId),
+      }))
     );
   };
 
@@ -133,9 +169,9 @@ export default function App() {
 
   return (
     <div className="flex h-screen">
-      <Sidebar setPage={setPage} />
+      <Sidebar page={page} setPage={setPage} />
       <div className="flex-1 flex flex-col">
-        <Header />
+        <Header page={page} />
         <div className="p-6">{renderPage()}</div>
       </div>
     </div>

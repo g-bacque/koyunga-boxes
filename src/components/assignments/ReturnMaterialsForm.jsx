@@ -65,43 +65,41 @@ export default function ReturnMaterialsForm({
   };
 
   return (
-    <form className="return-materials-form" onSubmit={handleSubmit}>
-      <h2 className="return-materials-form-title">Devolver materiales</h2>
+    <form className="form-card" onSubmit={handleSubmit}>
+      <h2 className="form-title">Devolver materiales</h2>
 
       {assignedMaterials.length === 0 ? (
-        <p className="return-materials-form-empty">
+        <p className="form-empty">
           Este cliente no tiene materiales asignados para devolver.
         </p>
       ) : (
-        <div className="return-materials-form-list">
+        <div className="form-list">
           {assignedMaterials.map((material) => (
-            <label key={material.id} className="return-materials-form-item">
+            <label key={material.id} className="form-check-item">
               <input
                 type="checkbox"
                 checked={selectedMaterials.includes(material.id)}
                 onChange={() => handleToggleMaterial(material.id)}
               />
 
-              <div className="return-materials-form-item-content">
-                <span className="return-materials-form-item-code">
-                  {material.id}
-                </span>
-                <span className="return-materials-form-item-name">
-                  {material.name}
-                </span>
+              <div className="form-check-item-content">
+                <span className="form-check-item-code">{material.id}</span>
+                <span className="form-check-item-name">{material.name}</span>
               </div>
             </label>
           ))}
         </div>
       )}
 
-      <button
-        type="submit"
-        className="return-materials-form-button"
-        disabled={selectedMaterials.length === 0}
-      >
-        Guardar devolución
-      </button>
+      <div className="form-actions">
+        <button
+          type="submit"
+          className="form-button-primary"
+          disabled={selectedMaterials.length === 0}
+        >
+          Guardar devolución
+        </button>
+      </div>
     </form>
   );
 }
