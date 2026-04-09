@@ -19,6 +19,32 @@ export default function MaterialTable({
     onDeleteMaterial(materialId);
   };
 
+  const sortedMaterials = [...materials].sort((a, b) => {
+  const categoryA = (a?.category || "").localeCompare(b?.category || "", "es", {
+    sensitivity: "base",
+  });
+
+  if (categoryA !== 0) return categoryA;
+
+  const levelOrder = {
+    "": 0,
+    Inicial: 1,
+    Básico: 2,
+    Medio: 3,
+    Avanzado: 4,
+    Funcional: 5,
+  };
+
+  const levelA = levelOrder[a?.level || ""] ?? 99;
+  const levelB = levelOrder[b?.level || ""] ?? 99;
+
+  if (levelA !== levelB) return levelA - levelB;
+
+  return (a?.id || "").localeCompare(b?.id || "", "es", {
+    sensitivity: "base",
+  });
+});
+
   return (
     <div className="table-container">
       <table className="table">
@@ -36,9 +62,9 @@ export default function MaterialTable({
         </thead>
 
         <tbody>
-          {materials.map((material, index) => {
+          {sortedMaterials.map((material, index) => {
             const previousCategory =
-              index > 0 ? materials[index - 1]?.category : null;
+            index > 0 ? sortedMaterials[index - 1]?.category : null;
             const isNewCategory = material.category !== previousCategory;
             const categoryBackground = getCategoryBackground(material.category);
 
