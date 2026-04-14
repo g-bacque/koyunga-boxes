@@ -1,21 +1,23 @@
 import { useMemo, useState } from "react";
 import "./AssignMaterialsForm.css";
+import { useAppDataContext } from "../../context/AppDataContext";
 
-export default function AssignMaterialsForm({
-  clientId,
-  materials,
-  setMaterials,
-  setAssignments,
-}) {
+export default function AssignMaterialsForm({ clientId }) {
+  const { materials = [], setMaterials, setAssignments } = useAppDataContext();
+
   const today = new Date().toISOString().split("T")[0];
 
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [assignedDate, setAssignedDate] = useState(today);
 
+  const safeMaterials = Array.isArray(materials)
+    ? materials.filter((material) => material && typeof material === "object")
+    : [];
+
   const availableMaterials = useMemo(() => {
-    return materials.filter((material) => material.status === "available");
-  }, [materials]);
+    return safeMaterials.filter((material) => material.status === "available");
+  }, [safeMaterials]);
 
   const filteredMaterials = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();

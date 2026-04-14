@@ -1,14 +1,16 @@
 import { useState } from "react";
+import { useAppDataContext } from "../../context/AppDataContext";
 import "./ReturnMaterialsForm.css";
 
-export default function ReturnMaterialsForm({
-  clientId,
-  materials,
-  setMaterials,
-  assignments,
-  setAssignments,
-}) {
-  const assignedMaterials = materials.filter(
+export default function ReturnMaterialsForm({ clientId }) {
+  const { materials, setMaterials, assignments, setAssignments } =
+    useAppDataContext();
+
+  const safeMaterials = materials.filter(
+    (material) => material && typeof material === "object"
+  );
+
+  const assignedMaterials = safeMaterials.filter(
     (material) => material.currentClientId === clientId
   );
 

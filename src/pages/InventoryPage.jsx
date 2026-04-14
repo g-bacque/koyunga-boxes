@@ -2,14 +2,12 @@ import { useMemo, useState } from "react";
 import MaterialTable from "../components/materials/MaterialTable";
 import MaterialFilters from "../components/materials/MaterialFilters";
 import AddMaterialForm from "../components/materials/AddMaterialForm";
+import { useAppDataContext } from "../context/AppDataContext";
 import "./InventoryPage.css";
 
-export default function InventoryPage({
-  materials,
-  setMaterials,
-  clients,
-  onDeleteMaterial,
-}) {
+export default function InventoryPage({ onDeleteMaterial }) {
+  const { materials = [], setMaterials, clients = [] } = useAppDataContext();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -29,12 +27,16 @@ export default function InventoryPage({
     setShowAddMaterialForm(false);
   };
 
+  const safeMaterials = Array.isArray(materials)
+  ? materials.filter((material) => material && typeof material === "object")
+  : [];
+
   const categories = useMemo(() => {
-    return [...new Set(materials.map((material) => material.category))].sort();
-  }, [materials]);
+    return [...new Set(safeMaterials.map((material) => material.category))].sort();
+  }, [safeMaterials]);
 
   const filteredMaterials = useMemo(() => {
-    return materials.filter((material) => {
+    return safeMaterials.filter((material) => {
       const normalizedSearch = searchTerm.trim().toLowerCase();
 
       const matchesSearch =
@@ -50,7 +52,7 @@ export default function InventoryPage({
 
       return matchesSearch && matchesStatus && matchesCategory;
     });
-  }, [materials, searchTerm, statusFilter, categoryFilter]);
+  }, [safeMaterials, searchTerm, statusFilter, categoryFilter]);
 
   return (
     <div className="inventory-page">

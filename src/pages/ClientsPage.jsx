@@ -1,14 +1,14 @@
 import { useState } from "react";
 import ClientTable from "../components/clients/ClientTable";
 import AddClientForm from "../components/clients/AddClientForm";
+import { useAppDataContext } from "../context/AppDataContext";
 import "./ClientsPage.css";
 
 export default function ClientsPage({
-  clients,
-  setClients,
   onSelectClient,
   onDeleteClient,
 }) {
+  const { clients = [], setClients } = useAppDataContext();
   const [showAddClientForm, setShowAddClientForm] = useState(false);
 
   const handleToggleAddClientForm = () => {

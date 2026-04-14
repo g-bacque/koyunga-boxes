@@ -3,18 +3,12 @@ import ClientCurrentMaterials from "../components/clients/ClientCurrentMaterials
 import ClientHistory from "../components/clients/ClientHistory";
 import AssignMaterialsForm from "../components/assignments/AssignMaterialsForm";
 import ReturnMaterialsForm from "../components/assignments/ReturnMaterialsForm";
+import { useAppDataContext } from "../context/AppDataContext";
 import "./ClientDetailPage.css";
 
-export default function ClientDetailPage({
-  client,
-  onBack,
-  materials,
-  setMaterials,
-  assignments,
-  setAssignments,
-}) {
+export default function ClientDetailPage({ client, onBack }) {
   const [activeAction, setActiveAction] = useState(null);
-
+  const { materials = [], assignments = [] } = useAppDataContext();
   if (!client) return null;
 
   const toggleAction = (action) => {
@@ -111,24 +105,13 @@ export default function ClientDetailPage({
 
         {activeAction === "assign" && (
           <div className="client-detail-form-wrapper">
-            <AssignMaterialsForm
-              clientId={client.id}
-              materials={materials}
-              setMaterials={setMaterials}
-              setAssignments={setAssignments}
-            />
+            <AssignMaterialsForm clientId={client.id} />
           </div>
         )}
 
         {activeAction === "return" && (
           <div className="client-detail-form-wrapper">
-            <ReturnMaterialsForm
-              clientId={client.id}
-              materials={materials}
-              setMaterials={setMaterials}
-              assignments={assignments}
-              setAssignments={setAssignments}
-            />
+            <ReturnMaterialsForm clientId={client.id} />
           </div>
         )}
       </section>

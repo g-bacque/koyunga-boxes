@@ -1,46 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 import DashboardPage from "../pages/DashboardPage";
 import InventoryPage from "../pages/InventoryPage";
 import ClientsPage from "../pages/ClientsPage";
 import ClientDetailPage from "../pages/ClientDetailPage";
-import initialMaterials from "../data/materials";
-import initialAssignments from "../data/assignments";
-import initialClients from "../data/clients";
-import {
-  STORAGE_KEYS,
-  getStoredData,
-  setStoredData,
-} from "../services/storage";
+import { useAppDataContext } from "../context/AppDataContext";
 
 export default function App() {
   const [page, setPage] = useState("dashboard");
   const [selectedClient, setSelectedClient] = useState(null);
 
-  const [materials, setMaterials] = useState(() =>
-    getStoredData(STORAGE_KEYS.materials, initialMaterials)
-  );
-
-  const [assignments, setAssignments] = useState(() =>
-    getStoredData(STORAGE_KEYS.assignments, initialAssignments)
-  );
-
-  const [clients, setClients] = useState(() =>
-    getStoredData(STORAGE_KEYS.clients, initialClients)
-  );
-
-  useEffect(() => {
-    setStoredData(STORAGE_KEYS.materials, materials);
-  }, [materials]);
-
-  useEffect(() => {
-    setStoredData(STORAGE_KEYS.assignments, assignments);
-  }, [assignments]);
-
-  useEffect(() => {
-    setStoredData(STORAGE_KEYS.clients, clients);
-  }, [clients]);
+  const {
+    prepareDeleteClient,
+    applyDeleteClient,
+    prepareDeleteMaterial,
+    applyDeleteMaterial,
+  } = useAppDataContext();
 
   const handleSelectClient = (client) => {
     setSelectedClient(client);
@@ -53,22 +29,21 @@ export default function App() {
   };
 
   const handleDeleteClient = (clientId) => {
-    const clientToDelete = clients.find((client) => client.id === clientId);
+    const result = prepareDeleteClient({
+      clientId,
+      selectedClient,
+    });
 
-    if (!clientToDelete) return;
-
-    const clientHasAssignedMaterials = materials.some(
-      (material) => material.currentClientId === clientId
-    );
-
-    if (clientHasAssignedMaterials) {
-      alert(
-        "No puedes eliminar este cliente porque todavía tiene materiales asignados."
-      );
+    if (!result.success) {
+      if (result.error === "CLIENT_HAS_ASSIGNED_MATERIALS") {
+        alert(
+          "No puedes eliminar este cliente porque todavía tiene materiales asignados."
+        );
+      }
       return;
     }
 
-    const fullName = `${clientToDelete.name} ${clientToDelete.lastName}`.trim();
+    const fullName = `${result.client.name} ${result.client.lastName}`.trim();
 
     const confirmation = prompt(
       `Para eliminar este cliente, escribe su nombre completo:\n${fullName}`
@@ -79,72 +54,46 @@ export default function App() {
       return;
     }
 
-    setClients((prevClients) =>
-      prevClients.filter((client) => client.id !== clientId)
-    );
+    applyDeleteClient(result);
 
-    setAssignments((prevAssignments) =>
-      prevAssignments.filter((assignment) => assignment.clientId !== clientId)
-    );
-
-    if (selectedClient?.id === clientId) {
+    if (result.shouldClearSelectedClient) {
       setSelectedClient(null);
       setPage("clients");
     }
   };
 
   const handleDeleteMaterial = (materialId) => {
-    const materialToDelete = materials.find(
-      (material) => material.id === materialId
-    );
+    const result = prepareDeleteMaterial({ materialId });
 
-    if (!materialToDelete) return;
-
-    if (materialToDelete.status === "assigned") {
-      alert(
-        "No puedes eliminar este material porque actualmente está asignado a un cliente."
-      );
+    if (!result.success) {
+      if (result.error === "MATERIAL_IS_ASSIGNED") {
+        alert(
+          "No puedes eliminar este material porque actualmente está asignado a un cliente."
+        );
+      }
       return;
     }
 
     const confirmation = prompt(
-      `Para eliminar este material, escribe su código:\n${materialToDelete.id}`
+      `Para eliminar este material, escribe su código:\n${result.material.id}`
     );
 
-    if (confirmation !== materialToDelete.id) {
+    if (confirmation !== result.material.id) {
       alert("El código no coincide. El material no se ha eliminado.");
       return;
     }
 
-    setMaterials((prevMaterials) =>
-      prevMaterials.filter((material) => material.id !== materialId)
-    );
-
-    setAssignments((prevAssignments) =>
-      prevAssignments.map((assignment) => ({
-        ...assignment,
-        materialIds: assignment.materialIds.filter((id) => id !== materialId),
-      }))
-    );
+    applyDeleteMaterial(result);
   };
 
   const renderPage = () => {
     switch (page) {
       case "inventory":
-        return (
-          <InventoryPage
-            materials={materials}
-            setMaterials={setMaterials}
-            clients={clients}
-            onDeleteMaterial={handleDeleteMaterial}
-          />
-        );
+        return <InventoryPage onDeleteMaterial={handleDeleteMaterial} />;
 
       case "clients":
         return (
           <ClientsPage
-            clients={clients}
-            setClients={setClients}
             onSelectClient={handleSelectClient}
             onDeleteClient={handleDeleteClient}
           />
@@ -155,25 +104,19 @@ export default function App() {
           <ClientDetailPage
             client={selectedClient}
             onBack={handleBackFromClientDetail}
-            materials={materials}
-            setMaterials={setMaterials}
-            assignments={assignments}
-            setAssignments={setAssignments}
           />
         );
 
       default:
-        return <DashboardPage materials={materials} />;
+        return <DashboardPage />;
     }
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="app-container">
       <Sidebar page={page} setPage={setPage} />
-      <div className="flex-1 flex flex-col">
-        <Header page={page} />
-        <div className="p-6">{renderPage()}</div>
-      </div>
+      <Header page={page} />
+      <div className="page-container">{renderPage()}</div>
     </div>
   );
 }

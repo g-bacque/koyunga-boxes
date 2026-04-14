@@ -1,9 +1,12 @@
 import "./DashboardPage.css";
+import { useAppDataContext } from "../context/AppDataContext";
 
-export default function DashboardPage({ materials = [] }) {
-  const safeMaterials = materials.filter(
-    (material) => material && typeof material === "object"
-  );
+export default function DashboardPage() {
+  const { materials = [] } = useAppDataContext();
+
+  const safeMaterials = Array.isArray(materials)
+    ? materials.filter((material) => material && typeof material === "object")
+    : [];
 
   const totalMaterials = safeMaterials.length;
 
