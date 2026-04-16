@@ -71,3 +71,23 @@
 .material-row {
   transition: background-color 0.2s ease;
 }
+
+.material-table-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.material-table-edit-button {
+  border: 1px solid var(--color-border);
+  background-color: white;
+  color: var(--color-text);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.material-table-edit-button:hover {
+  background-color: #f9fafb;
+}

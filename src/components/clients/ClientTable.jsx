@@ -4,11 +4,18 @@ export default function ClientTable({
   clients,
   onSelectClient,
   onDeleteClient,
+  onEditClient,
 }) {
-  const handleDeleteClick = (event, clientId) => {
-    event.stopPropagation();
-    onDeleteClient(clientId);
-  };
+
+const handleDeleteClick = (event, clientId) => {
+  event.stopPropagation();
+  onDeleteClient(clientId);
+};
+
+const handleEditClick = (event, client) => {
+  event.stopPropagation();
+  onEditClient(client);
+};
 
   return (
     <div className="client-table-container">
@@ -41,12 +48,23 @@ export default function ClientTable({
               <td>{client.email || "-"}</td>
               <td>{client.notes || "-"}</td>
               <td>
-                <button
-                  className="client-table-delete-button"
-                  onClick={(event) => handleDeleteClick(event, client.id)}
-                >
-                  Eliminar
-                </button>
+                <div className="client-table-actions">
+                  <button
+                    type="button"
+                    className="client-table-edit-button"
+                    onClick={(event) => handleEditClick(event, client)}
+                  >
+                    Editar
+                  </button>
+
+                  <button
+                    type="button"
+                    className="client-table-delete-button"
+                    onClick={(event) => handleDeleteClick(event, client.id)}
+                  >
+                    Eliminar
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

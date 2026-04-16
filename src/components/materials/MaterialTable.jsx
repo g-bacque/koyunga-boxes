@@ -6,6 +6,7 @@ export default function MaterialTable({
   materials,
   clients,
   onDeleteMaterial,
+  onEditMaterial,
 }) {
   const getClientName = (clientId) => {
     if (!clientId) return "—";
@@ -14,10 +15,14 @@ export default function MaterialTable({
     return client ? `${client.name} ${client.lastName}`.trim() : "—";
   };
 
-  const handleDeleteClick = (event, materialId) => {
-    event.stopPropagation();
-    onDeleteMaterial(materialId);
-  };
+const handleDeleteClick = (event, materialId) => {
+  event.stopPropagation();
+  onDeleteMaterial(materialId);
+};
+const handleEditClick = (event, material) => {
+  event.stopPropagation();
+  onEditMaterial(material);
+};
 
   const sortedMaterials = [...materials].sort((a, b) => {
   const categoryA = (a?.category || "").localeCompare(b?.category || "", "es", {
@@ -77,6 +82,7 @@ export default function MaterialTable({
                 material={material}
                 getClientName={getClientName}
                 handleDeleteClick={handleDeleteClick}
+                handleEditClick={handleEditClick}
               />
             );
           })}
@@ -93,6 +99,7 @@ function FragmentRow({
   material,
   getClientName,
   handleDeleteClick,
+  handleEditClick,
 }) {
   return (
     <>
@@ -122,12 +129,26 @@ function FragmentRow({
         <td>{getClientName(material.currentClientId)}</td>
         <td>{material.notes || "—"}</td>
         <td>
+            <div className="material-table-actions">
+    <button
+      type="button"
+      className="material-table-edit-button"
+      onClick={(event) => handleEditClick(event, material)}
+    >
+      Editar
+    </button>
           <button
+            type="button"
             className="material-table-delete-button"
-            onClick={(event) => handleDeleteClick(event, material.id)}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              handleDeleteClick(event, material.id);
+            }}
           >
             Eliminar
           </button>
+          </div>
         </td>
       </tr>
     </>

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
+import { isTauri } from "@tauri-apps/api/core";
 import { materialsService } from "../services/materialsService";
+import { materialsSqliteService } from "../services/materialsSqliteService";
 import { clientsService } from "../services/clientsService";
+import { clientsSqliteService } from "../services/clientsSqliteService";
 import { assignmentsService } from "../services/assignmentsService";
+import { assignmentsSqliteService } from "../services/assignmentsSqliteService";
+import { ensureDBInitialized } from "../services/dbInit";
 import {
   deleteClientData,
   deleteMaterialData,
@@ -14,17 +19,101 @@ export function useAppData() {
     assignmentsService.load()
   );
 
-  useEffect(() => {
-    materialsService.save(materials);
-  }, [materials]);
+  const [storageHydrated, setStorageHydrated] = useState(!isTauri());
 
   useEffect(() => {
-    clientsService.save(clients);
-  }, [clients]);
+    let cancelled = false;
+
+    async function hydrateFromStorage() {
+      if (!isTauri()) {
+        setStorageHydrated(true);
+        return;
+      }
+
+      try {
+        await ensureDBInitialized();
+
+        const [sqliteMaterials, sqliteClients, sqliteAssignments] =
+          await Promise.all([
+            materialsSqliteService.load(),
+            clientsSqliteService.load(),
+            assignmentsSqliteService.load(),
+          ]);
+
+        if (cancelled) return;
+
+        setMaterials(sqliteMaterials);
+        setClients(sqliteClients);
+        setAssignments(sqliteAssignments);
+      } catch (error) {
+        console.error("Error hydrating app data from SQLite:", error);
+      } finally {
+        if (!cancelled) {
+          setStorageHydrated(true);
+        }
+      }
+    }
+
+    hydrateFromStorage();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
-    assignmentsService.save(assignments);
-  }, [assignments]);
+    async function saveMaterials() {
+      if (!storageHydrated) return;
+
+      try {
+        if (isTauri()) {
+          await materialsSqliteService.saveAll(materials);
+        } else {
+          materialsService.save(materials);
+        }
+      } catch (error) {
+        console.error("Error saving materials:", error);
+      }
+    }
+
+    saveMaterials();
+  }, [materials, storageHydrated]);
+
+  useEffect(() => {
+    async function saveClients() {
+      if (!storageHydrated) return;
+
+      try {
+        if (isTauri()) {
+          await clientsSqliteService.saveAll(clients);
+        } else {
+          clientsService.save(clients);
+        }
+      } catch (error) {
+        console.error("Error saving clients:", error);
+      }
+    }
+
+    saveClients();
+  }, [clients, storageHydrated]);
+
+  useEffect(() => {
+    async function saveAssignments() {
+      if (!storageHydrated) return;
+
+      try {
+        if (isTauri()) {
+          await assignmentsSqliteService.saveAll(assignments);
+        } else {
+          assignmentsService.save(assignments);
+        }
+      } catch (error) {
+        console.error("Error saving assignments:", error);
+      }
+    }
+
+    saveAssignments();
+  }, [assignments, storageHydrated]);
 
   const prepareDeleteClient = ({ clientId, selectedClient }) => {
     return deleteClientData({

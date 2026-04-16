@@ -4,6 +4,7 @@ import MaterialFilters from "../components/materials/MaterialFilters";
 import AddMaterialForm from "../components/materials/AddMaterialForm";
 import { useAppDataContext } from "../context/AppDataContext";
 import "./InventoryPage.css";
+import EditMaterialForm from "../components/materials/EditMaterialForm";
 
 export default function InventoryPage({ onDeleteMaterial }) {
   const { materials = [], setMaterials, clients = [] } = useAppDataContext();
@@ -12,6 +13,25 @@ export default function InventoryPage({ onDeleteMaterial }) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [showAddMaterialForm, setShowAddMaterialForm] = useState(false);
+  const [editingMaterial, setEditingMaterial] = useState(null);
+
+  const handleEditMaterial = (material) => {
+  setEditingMaterial(material);
+};
+
+const handleCancelEditMaterial = () => {
+  setEditingMaterial(null);
+};
+
+const handleSaveMaterial = (updatedMaterial) => {
+  setMaterials((prevMaterials) =>
+    prevMaterials.map((material) =>
+      material.id === editingMaterial.id ? updatedMaterial : material
+    )
+  );
+
+  setEditingMaterial(null);
+};
 
   const handleClearFilters = () => {
     setSearchTerm("");
@@ -90,12 +110,19 @@ export default function InventoryPage({ onDeleteMaterial }) {
           Limpiar filtros
         </button>
       </div>
-
       <MaterialTable
         materials={filteredMaterials}
         clients={clients}
         onDeleteMaterial={onDeleteMaterial}
+        onEditMaterial={handleEditMaterial}
       />
+      {editingMaterial && (
+        <EditMaterialForm
+          material={editingMaterial}
+          onCancel={handleCancelEditMaterial}
+          onSave={handleSaveMaterial}
+        />
+      )}
     </div>
   );
 }
